@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = MT940::VERSION
   spec.authors       = ["Georgi Mitrev"]
   spec.email         = ["gvmitrev@gmail.com"]
-  spec.description   = %q{MT940 parser}
+  spec.description   = %q{(SWIFT)MT940 file parser}
   spec.summary       = %q{Parser for the (SWIFT)-MT940 format}
   spec.homepage      = ""
   spec.license       = "MIT"
