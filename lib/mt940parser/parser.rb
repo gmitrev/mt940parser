@@ -29,7 +29,7 @@ module MT940
     def self.clean_tree(root_node)
       return if(root_node.elements.nil?)
       root_node.elements.delete_if{|node| node.class.name == "Treetop::Runtime::SyntaxNode" }
-      root_node.elements.delete_if{|node| node.class.name == "Mt940::NewLine" } #remove nls
+      root_node.elements.delete_if{|node| node.class.name == "Document::NewLine" } #remove nls
       root_node.elements.delete_if{|node| node.class.name == "R86::Blank" } #remove nls
       root_node.elements.each {|node| self.clean_tree(node) }
     end

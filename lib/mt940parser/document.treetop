@@ -19,7 +19,6 @@ grammar Document
 
   rule statement_number
     codess (!(nl) .)* nl <NotImplemented>
-    # (":28:" / ":28C:") (!(nl) .)* <NotImplemented>
   end
 
   rule initial_balance #:60F:
