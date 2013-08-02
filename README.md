@@ -1,6 +1,7 @@
-# Mt940parser
+# MT940Parser
 
-TODO: Write a gem description
+A parser written in Treetop for handling files in MT940 format. The format is widely used in
+Europe by banks and it contains information about client account statements for a given time period.
 
 ## Installation
 
@@ -18,7 +19,17 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+    result = MT940::Parser.parse(string)
+    
+Now you can do some cool stuff like list all records:
+
+    result.elements #=>
+    
+Or list all transactions for a given record:
+
+    result.elements.first.transactions
+    
+More to come
 
 ## Contributing
 
