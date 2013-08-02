@@ -1,0 +1,65 @@
+grammar R86
+
+  rule statement
+    mark code description details bank_code account_number name  <Statement>
+  end
+
+  rule mark
+    ":86:" <Mark>
+  end
+
+  rule code
+    (!(codes) .)* <Code> / '' <Blank>
+  end
+
+  rule description
+    s '00' (!(codes) .)* <Description> / '' <Blank>
+  end
+
+  rule details
+    details0? details1 details2 details3 <Details>
+  end
+
+  rule details0
+    s '20' (!(codes) .)* <Detail> / '' <Blank>
+  end
+
+  rule details1
+    s '21' (!(codes) .)* <Detail> / '' <Blank>
+  end
+
+  rule details2
+    s '22' (!(codes) .)* <Detail> / '' <Blank>
+  end
+
+  rule details3
+    s '23' (!(codes) .)* <Detail> / '' <Blank>
+  end
+  rule bank_code
+    s '30' (!(codes) .)* <NotImplemented> / '' <Blank>
+  end
+  rule account_number
+    s '31' (!(codes) .)* <NotImplemented> / '' <Blank>
+  end
+
+  rule name
+    s '32' (!(nl) .)* <NotImplemented> / s '38' (!(nl) .)* <NotImplemented> / '' <Blank>
+  end
+  # rule smth
+  #   s '38' (!(nl) .)* / ''
+  # end
+
+  rule codes
+    s '00' / s '10' / s '20' / s '21' / s '22' / s '23' / s '24' / s '25' / s '26' 
+    / s '27' / s '30' / s '31' / s '32' / s '33' / s '38' 
+  end
+
+  rule s
+    '^' / '+'
+  end
+
+  rule nl
+    [\n] <NewLine>
+  end
+
+end

@@ -1,0 +1,83 @@
+grammar Document
+  include R86
+
+  rule root
+    record*  <All>
+  end
+
+  rule record
+    date account_iban statement_number initial_balance transactions final_balance wololo? <Record>
+  end
+
+  rule date
+    codess (!(nl) .)* nl <Date>
+  end
+
+  rule account_iban #:25:
+    codess (!(nl) .)* nl <NotImplemented>
+  end
+
+  rule statement_number
+    codess (!(nl) .)* nl <NotImplemented>
+    # (":28:" / ":28C:") (!(nl) .)* <NotImplemented>
+  end
+
+  rule initial_balance #:60F:
+    codess (!(nl) .)* nl <NotImplemented>
+  end
+
+  # Create captures for those if needed (not for now)
+  rule final_balance
+    ":62F:" (!(nl) .)*  nl
+  end
+
+  rule wololo
+    ":64:" (!('-' / nl) .)*
+  end
+
+  rule codess
+    (':61:' <Cods> / ":20:" <Cods> / ":28:" <Cods> / ":28C:" <Cods> / ":25:" <Cods> / ":60F:" <Cods> ) 
+  end
+
+  rule eof
+    .* 
+  end
+
+  rule transactions
+    (transaction)* <Transactions>
+  end
+
+  rule transaction
+    base statement nl <Transaction>
+  end
+
+  rule base
+    # ":61:" valor date debit amount swift '//' reference (.)*
+    codess valor account_date type amount swift (!(nl) .)*  nl <Base>
+  end
+# ========= Base ======== #
+  rule valor
+    [\d] 6..6 <Valor>
+  end
+
+  rule account_date
+    [\d] 4..4 <AccountDate>
+  end
+
+  rule type
+    'C' <Type> / 'D' <Type>
+  end
+
+  rule amount
+    (![a-zA-Z] .) ..15 <Amount>
+  end
+
+  rule swift
+    [a-zA-Z] 4..4 <NotImplemented>
+  end
+
+  rule nl
+    [\n] <NewLine>
+  end
+
+end
