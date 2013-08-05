@@ -1,30 +1,27 @@
 module Document
 
   class Transaction < Treetop::Runtime::SyntaxNode
-    def details
-      elements.last.elements.last.text_value
-    end
-
-    def policy_numbers
-      details.scan(/\d{3,}/)
+    def to_hash
+      base.to_hash.merge(statement.to_hash)
     end
   end
 
   class All < Treetop::Runtime::SyntaxNode
-    def all_transactions
-      elements.map(&:t).map(&:elements).flatten
+
+    def to_hash
+      elements.map(&:to_hash)
     end
 
-    def all_policy_numbers
-      all_transactions.map(&:policy_numbers).reject(&:empty?)
+    def transactions
+      elements.flat_map(&:to_hash)
     end
 
-    def all_credit
-      all_transactions.select { |t| t.base.type.text_value == "C" }
+    def transactions_credit
+      transactions.select{ |t| t[:type] == :credit}
     end
 
-    def all_debit
-      all_transactions.select { |t| t.base.type.text_value == "D" }
+    def transactions_debit
+      transactions.select{ |t| t[:type] == :debit }
     end
 
     # Utility
@@ -33,16 +30,27 @@ module Document
     end
   end
   class Transactions < Treetop::Runtime::SyntaxNode
+    def to_hash
+      elements.flat_map(&:to_hash)
+    end
   end
   class Statement < Treetop::Runtime::SyntaxNode
   end
   class Record < Treetop::Runtime::SyntaxNode
-    def t
-      elements.last
+    def to_hash
+      elements.select{ |e| e.class == Document::Transactions }.flat_map(&:to_hash)
     end
   end
 
   class Base < Treetop::Runtime::SyntaxNode
+    def to_hash
+      {
+        valor: valor.text_value,
+        account_date: account_date.text_value,
+        type: type.val,
+        amount: amount.val
+      }
+    end
   end
   class Digit < Treetop::Runtime::SyntaxNode
   end
@@ -55,6 +63,9 @@ module Document
   class AccountDate < Treetop::Runtime::SyntaxNode
   end
   class Type < Treetop::Runtime::SyntaxNode
+    def val
+      text_value == 'C' ? :credit : :debit
+    end
   end
   class Amount < Treetop::Runtime::SyntaxNode
     def val 
@@ -62,11 +73,18 @@ module Document
     end
   end
   class NotImplemented < Treetop::Runtime::SyntaxNode
+    def to_hash
+      {}
+    end
   end
   class NewLine < Treetop::Runtime::SyntaxNode
   end
 
   class Date < Treetop::Runtime::SyntaxNode
+    def to_hash
+      {}
+    end
+
     def val
       text_value.strip[4..-1]
     end
@@ -80,12 +98,25 @@ module R86
   class Mark < Treetop::Runtime::SyntaxNode
   end
   class Description < Treetop::Runtime::SyntaxNode
+    def val
+      text_value.strip[3..-1]
+    end
   end
   class Details < Treetop::Runtime::SyntaxNode
+    def val
+      text_value.strip[3..-1]
+    end
   end
   class Detail < Treetop::Runtime::SyntaxNode
   end
   class Statement < Treetop::Runtime::SyntaxNode
+    def to_hash
+      {
+        code: code.text_value,
+        description: description.val,
+        details: details.val
+      }
+    end
   end
   class Code < Treetop::Runtime::SyntaxNode
   end
