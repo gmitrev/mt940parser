@@ -1,4 +1,5 @@
 module MT940
+  class ParseError < StandardError; end
   class Parser
 
     base_path = File.dirname(__FILE__)
@@ -11,7 +12,10 @@ module MT940
     def self.parse(data)
       tree = @@parser.parse(data)
 
-      self.show_error(data) if tree.nil?
+      if tree.nil?
+        self.show_error(data)
+        raise ParseError, "Failed to parse file. See log for more information"
+      end
 
       # clean up the tree by removing all nodes of default type 'SyntaxNode'
       self.clean_tree(tree)
