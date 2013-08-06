@@ -6,7 +6,7 @@ grammar Document
   end
 
   rule record
-    date account_iban statement_number initial_balance transactions final_balance wololo? <Record>
+    date account_iban statement_number initial_balance transactions closing_balance closing_available_balance? <Record>
   end
 
   rule date
@@ -51,8 +51,7 @@ grammar Document
   end
 
   rule base
-    # ":61:" valor date debit amount swift '//' reference (.)*
-    codess valor account_date type amount swift (!(nl) .)*  nl <Base>
+    codess valor account_date type amount swift (!(nl) .)*  nl <Base> # ":61:" 
   end
 # ========= Base ======== #
   rule valor
