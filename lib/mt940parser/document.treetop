@@ -26,16 +26,16 @@ grammar Document
   end
 
   # Create captures for those if needed (not for now)
-  rule final_balance
-    ":62F:" (!(nl) .)*  nl
+  rule closing_balance
+    codess (!(nl) .)*  nl
   end
 
-  rule wololo
-    ":64:" (!('-' / nl) .)*
+  rule closing_available_balance
+    ":64:" (!(nl) .)* nl
   end
 
   rule codess
-    (':61:' <Cods> / ":20:" <Cods> / ":28:" <Cods> / ":28C:" <Cods> / ":25:" <Cods> / ":60F:" <Cods> ) 
+    (':61:' <Cods> / ":20:" <Cods> / ":28:" <Cods> / ":28C:" <Cods> / ":25:" <Cods> / ":60F:" <Cods> /":62F:" <Cods> ) 
   end
 
   rule eof
