@@ -19,17 +19,7 @@ Or install it yourself as:
 
 ## Usage
 
-    result = MT940::Parser.parse(string)
-    
-Now you can do some cool stuff like list all records:
-
-    result.elements #=>
-    
-Or list all transactions for a given record:
-
-    result.elements.first.transactions
-    
-More to come
+read the source
 
 ## Contributing
 
